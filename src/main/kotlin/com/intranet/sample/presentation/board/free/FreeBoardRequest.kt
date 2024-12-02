@@ -1,9 +1,9 @@
-package com.intranet.sample.presentation.board
+package com.intranet.sample.presentation.board.free
 
 import jakarta.validation.constraints.NotBlank
 import org.hibernate.validator.constraints.Length
 
-class BoardRequest {
+class FreeBoardRequest {
 
     data class Post(
         @field:NotBlank

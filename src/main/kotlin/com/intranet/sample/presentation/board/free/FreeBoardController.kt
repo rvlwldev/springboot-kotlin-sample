@@ -1,6 +1,6 @@
-package com.intranet.sample.presentation.board
+package com.intranet.sample.presentation.board.free
 
-import com.intranet.sample.domain.board.AbstractBoardService
+import com.intranet.sample.domain.board.free.FreeBoardService
 import jakarta.validation.Valid
 import org.springframework.data.domain.PageRequest
 import org.springframework.http.ResponseEntity
@@ -16,44 +16,44 @@ import org.springframework.web.bind.annotation.RestController
 import java.net.URI
 
 @RestController
-@RequestMapping("/board")
-class BoardController(private val service: AbstractBoardService) {
+@RequestMapping("/free")
+class FreeBoardController(private val service: FreeBoardService) {
 
     @GetMapping("/{id}")
-    fun getOne(@PathVariable("id") id: Long) =
+    fun getOne(@PathVariable("id") id: Long): ResponseEntity<FreeBoardResponse.Detail> =
         service.getDetail(id)
-            .let { BoardResponse.Detail(it) }
+            .let { FreeBoardResponse.Detail(it) }
             .let { ResponseEntity.ok(it) }
 
     @GetMapping
     fun getPage(
         @RequestParam("page") page: Int = 0,
         @RequestParam("size") size: Int = 10,
-    ): ResponseEntity<BoardResponse.Page> =
+    ): ResponseEntity<FreeBoardResponse.Page> =
         service.getPage(PageRequest.of(page, size))
-            .let { BoardResponse.Page(it) }
+            .let { FreeBoardResponse.Page(it) }
             .let { ResponseEntity.ok(it) }
 
     @PostMapping
-    fun post(@RequestBody @Valid request: BoardRequest.Post): ResponseEntity<Unit> =
-        service.create(request.username, request.password, request.title, request.content)
-            .let { ResponseEntity.created(URI.create("/board/${it.id}")).build() }
+    fun post(@RequestBody @Valid request: FreeBoardRequest.Post): ResponseEntity<Unit> =
+        service.save(request.username, request.password, request.title, request.content)
+            .let { ResponseEntity.created(URI.create("/free/${it.id}")).build() }
 
     @PutMapping("/{id}")
     fun update(
         @PathVariable("id") id: Long,
-        @RequestBody @Valid request: BoardRequest.Update
-    ): ResponseEntity<BoardResponse.Detail> =
+        @RequestBody @Valid request: FreeBoardRequest.Update
+    ): ResponseEntity<FreeBoardResponse.Detail> =
         service.update(id, request.password, request.title, request.content)
-            .let { BoardResponse.Detail(it) }
+            .let { FreeBoardResponse.Detail(it) }
             .let { ResponseEntity.ok(it) }
-
 
     @DeleteMapping("/{id}")
     fun delete(
         @PathVariable("id") id: Long,
-        @RequestBody @Valid request: BoardRequest.Delete
+        @RequestBody @Valid request: FreeBoardRequest.Delete
     ): ResponseEntity<Unit> =
         service.delete(id, request.password)
             .let { ResponseEntity.noContent().build() }
+
 }
