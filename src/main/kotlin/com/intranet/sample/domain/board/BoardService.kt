@@ -11,7 +11,9 @@ class BoardService(
 ) {
 
     fun getDetail(id: Long) =
-        repo.findById(id)?.let { BoardDTO.Info(it) }
+        repo.findById(id)
+            ?.also { if (it.audit.deletedAt == null) throw IllegalArgumentException() }
+            ?.let { BoardDTO.Info(it) }
             ?: throw IllegalArgumentException()
 
     fun getPage(request: PageRequest) =
