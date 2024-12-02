@@ -13,7 +13,7 @@ class BoardService(
 
     fun getDetail(id: Long) =
         repo.findById(id)
-            ?.also { if (it.audit.deletedAt == null) throw IllegalArgumentException() }
+            ?.also { if (it.audit.deletedAt != null) throw IllegalArgumentException() }
             ?.let { BoardDTO.Info(it) }
             ?: throw IllegalArgumentException()
 
