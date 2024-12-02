@@ -43,10 +43,10 @@ class FreeBoardController(private val service: FreeBoardService) {
     fun update(
         @PathVariable("id") id: Long,
         @RequestBody @Valid request: FreeBoardRequest.Update
-    ): ResponseEntity<FreeBoardResponse.Detail> =
+    ): ResponseEntity<Unit> =
         service.update(id, request.password, request.title, request.content)
-            .let { FreeBoardResponse.Detail(it) }
-            .let { ResponseEntity.ok(it) }
+            .let { URI.create("/free/${it.id}") }
+            .let { uri -> ResponseEntity.noContent().location(uri).build() }
 
     @DeleteMapping("/{id}")
     fun delete(

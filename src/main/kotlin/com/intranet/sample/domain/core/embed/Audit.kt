@@ -24,14 +24,6 @@ class Audit(
 ) {
 
     /**
-     * 수정 시 자동으로 마지막 수정일 UPDATE
-     * */
-    @PreUpdate
-    private fun onUpdate() {
-        updatedAt = LocalDateTime.now()
-    }
-
-    /**
      * 삭제 시 삭제시간만 저장 (논리삭제)
      * */
     fun delete() {

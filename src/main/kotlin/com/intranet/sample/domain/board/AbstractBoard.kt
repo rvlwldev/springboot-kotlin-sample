@@ -8,7 +8,9 @@ import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.MappedSuperclass
+import jakarta.persistence.PreUpdate
 import org.hibernate.annotations.Comment
+import java.time.LocalDateTime
 
 @MappedSuperclass
 abstract class AbstractBoard(
@@ -51,6 +53,14 @@ abstract class AbstractBoard(
 
         this.title = title
         this.content = content
+    }
+
+    /**
+     * 수정 시 자동으로 마지막 수정일 UPDATE
+     * */
+    @PreUpdate
+    private fun onUpdate() {
+        audit.updatedAt = LocalDateTime.now()
     }
 
 }

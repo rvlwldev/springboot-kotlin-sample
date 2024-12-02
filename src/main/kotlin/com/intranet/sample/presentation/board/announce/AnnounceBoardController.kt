@@ -45,8 +45,8 @@ class AnnounceBoardController(private val service: AnnounceBoardService) {
         @RequestBody @Valid request: AnnounceBoardRequest.Update
     ): ResponseEntity<AnnounceBoardResponse.Detail> =
         service.update(id, request.password, request.title, request.content)
-            .let { AnnounceBoardResponse.Detail(it) }
-            .let { ResponseEntity.ok(it) }
+            .let { URI.create("/announce/${it.id}") }
+            .let { uri -> ResponseEntity.noContent().location(uri).build() }
 
     @DeleteMapping("/{id}")
     fun delete(
