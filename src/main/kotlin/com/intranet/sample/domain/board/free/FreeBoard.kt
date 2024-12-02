@@ -5,5 +5,5 @@ import jakarta.persistence.Entity
 import jakarta.persistence.Table
 
 @Entity
-@Table(name = "free_board")
+@Table(name = "board_free")
 class FreeBoard : AbstractBoard()
