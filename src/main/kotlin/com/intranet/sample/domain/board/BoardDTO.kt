@@ -23,31 +23,17 @@ class BoardDTO {
         )
     }
 
-    data class SimpleInfo(
-        val id: Long,
-        val title: String,
-        val username: String,
-        val createdAt: LocalDateTime,
-    ) {
-        constructor(board: Board) : this(
-            id = board.id,
-            title = board.getTitle(),
-            username = board.getUsername(),
-            createdAt = board.audit.createdAt
-        )
-    }
-
-    data class PageableSimpleInfo(
-        val list: List<SimpleInfo>,
-        val total: Long,
-        val current: Long,
-        val size: Long,
+    data class PageableInfo(
+        val list: List<Info>,
+        val total: Int,
+        val current: Int,
+        val size: Int,
     ) {
         constructor(board: Page<Board>) : this(
-            list = board.content.map { SimpleInfo(it) },
-            total = board.totalPages.toLong(),
-            current = board.number.toLong(),
-            size = board.size.toLong()
+            list = board.content.map { Info(it) },
+            total = board.totalPages,
+            current = board.number,
+            size = board.size
         )
     }
 

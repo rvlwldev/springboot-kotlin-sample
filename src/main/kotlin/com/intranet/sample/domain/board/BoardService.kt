@@ -3,6 +3,7 @@ package com.intranet.sample.domain.board
 import org.springframework.data.domain.PageRequest
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class BoardService(
@@ -17,8 +18,9 @@ class BoardService(
             ?: throw IllegalArgumentException()
 
     fun getPage(request: PageRequest) =
-        repo.findAllNotDeleted(request).let { BoardDTO.PageableSimpleInfo(it) }
+        repo.findAllNotDeleted(request).let { BoardDTO.PageableInfo(it) }
 
+    @Transactional
     fun create(username: String, password: String, title: String, content: String): BoardDTO.Info {
         val encoded = passwordEncoder.encode(password)
         val board = Board()
@@ -30,7 +32,8 @@ class BoardService(
             .let { BoardDTO.Info(it) }
     }
 
-    fun update(id: Long, password: String, title: String, content: String) {
+    @Transactional
+    fun update(id: Long, password: String, title: String, content: String): BoardDTO.Info {
         val board = repo.findById(id) ?: throw IllegalArgumentException()
 
         if (!passwordEncoder.matches(password, board.getPassword()))
@@ -42,6 +45,7 @@ class BoardService(
             .let { BoardDTO.Info(it) }
     }
 
+    @Transactional
     fun delete(id: Long, password: String) {
         val board = repo.findById(id) ?: throw IllegalArgumentException()
 
