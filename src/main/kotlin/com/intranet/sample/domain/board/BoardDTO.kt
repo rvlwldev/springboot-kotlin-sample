@@ -5,7 +5,7 @@ import java.time.LocalDateTime
 
 class BoardDTO {
 
-    data class Info(
+    open class OpenInfo<T : AbstractBoard>(
         val id: Long,
         val title: String,
         val content: String,
@@ -13,7 +13,7 @@ class BoardDTO {
         val createdAt: LocalDateTime,
         val updatedAt: LocalDateTime?,
     ) {
-        constructor(board: Board) : this(
+        constructor(board: T) : this(
             id = board.id,
             title = board.getTitle(),
             content = board.getContent(),
@@ -23,18 +23,17 @@ class BoardDTO {
         )
     }
 
-    data class PageableInfo(
-        val list: List<Info>,
+    open class OpenPageInfo<T : AbstractBoard, I : OpenInfo<T>>(
+        val list: List<I>,
         val total: Int,
         val current: Int,
-        val size: Int,
+        val size: Int
     ) {
-        constructor(board: Page<Board>) : this(
-            list = board.content.map { Info(it) },
-            total = board.totalPages,
-            current = board.number,
-            size = board.size
+        constructor(page: Page<T>, mapper: (T) -> I) : this(
+            list = page.content.map(mapper),
+            total = page.totalPages,
+            current = page.number,
+            size = page.size
         )
     }
-
 }

@@ -1,6 +1,6 @@
 package com.intranet.sample.presentation.board
 
-import com.intranet.sample.domain.board.BoardService
+import com.intranet.sample.domain.board.AbstractBoardService
 import jakarta.validation.Valid
 import org.springframework.data.domain.PageRequest
 import org.springframework.http.ResponseEntity
@@ -17,7 +17,7 @@ import java.net.URI
 
 @RestController
 @RequestMapping("/board")
-class BoardController(private val service: BoardService) {
+class BoardController(private val service: AbstractBoardService) {
 
     @GetMapping("/{id}")
     fun getOne(@PathVariable("id") id: Long) =

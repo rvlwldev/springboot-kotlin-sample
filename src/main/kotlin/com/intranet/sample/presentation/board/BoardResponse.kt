@@ -1,6 +1,6 @@
 package com.intranet.sample.presentation.board
 
-import com.intranet.sample.domain.board.BoardDTO
+import com.intranet.sample.domain.board.AbstractBoardDTO
 import java.time.LocalDateTime
 
 class BoardResponse {
@@ -13,7 +13,7 @@ class BoardResponse {
         val createdAt: LocalDateTime,
         val updatedAt: LocalDateTime?
     ) {
-        constructor(board: BoardDTO.Info) : this(
+        constructor(board: AbstractBoardDTO.Info) : this(
             id = board.id,
             username = board.username,
             title = board.title,
@@ -28,7 +28,7 @@ class BoardResponse {
         val title: String,
         val createdAt: LocalDateTime
     ) {
-        constructor(board: BoardDTO.Info) : this(
+        constructor(board: AbstractBoardDTO.Info) : this(
             id = board.id,
             title = board.title,
             createdAt = board.createdAt,
@@ -41,7 +41,7 @@ class BoardResponse {
         val current: Int,
         val size: Int
     ) {
-        constructor(page: BoardDTO.PageableInfo) : this(
+        constructor(page: AbstractBoardDTO.PageableInfo) : this(
             list = page.list.map { Simple(it) },
             total = page.total,
             current = page.current + 1,

@@ -4,17 +4,14 @@ import com.intranet.sample.domain.core.embed.Anonymous
 import com.intranet.sample.domain.core.embed.Audit
 import jakarta.persistence.Column
 import jakarta.persistence.Embedded
-import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
-import jakarta.persistence.Table
+import jakarta.persistence.MappedSuperclass
 import org.hibernate.annotations.Comment
 
-@Entity
-@Table(name = "board")
-@Comment("게시판")
-class Board(
+@MappedSuperclass
+abstract class AbstractBoard(
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
