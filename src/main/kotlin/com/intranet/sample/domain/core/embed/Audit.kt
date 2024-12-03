@@ -2,7 +2,6 @@ package com.intranet.sample.domain.core.embed
 
 import jakarta.persistence.Column
 import jakarta.persistence.Embeddable
-import jakarta.persistence.PreUpdate
 import org.hibernate.annotations.Comment
 import java.time.LocalDateTime
 
@@ -29,6 +28,8 @@ class Audit(
     fun delete() {
         deletedAt = LocalDateTime.now()
     }
+
+    fun isDeleted() = deletedAt != null
 
 }
 
