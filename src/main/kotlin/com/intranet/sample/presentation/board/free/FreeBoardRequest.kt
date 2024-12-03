@@ -1,7 +1,7 @@
 package com.intranet.sample.presentation.board.free
 
+import com.intranet.sample.presentation.core.validation.annotation.ValidAnonymousPassword
 import jakarta.validation.constraints.NotBlank
-import org.hibernate.validator.constraints.Length
 
 class FreeBoardRequest {
 
@@ -9,8 +9,7 @@ class FreeBoardRequest {
         @field:NotBlank
         val username: String,
 
-        @field:NotBlank
-        @field:Length(min = 4)
+        @field:ValidAnonymousPassword
         val password: String,
 
         @field:NotBlank
@@ -32,7 +31,7 @@ class FreeBoardRequest {
     )
 
     data class Delete(
-        @field:NotBlank
+        @field:ValidAnonymousPassword
         val password: String,
     )
 
