@@ -29,12 +29,16 @@ class DiscussBoardDTO {
     class CommentInfo(
         val id: Long,
         val username: String,
-        val createdAt: LocalDateTime
+        val content: String,
+        val createdAt: LocalDateTime,
+        val updatedAt: LocalDateTime?
     ) {
         constructor(comment: DiscussComment) : this(
             id = comment.id,
             username = comment.anonymous.username,
-            createdAt = comment.audit.createdAt
+            content = comment.getContent(),
+            createdAt = comment.audit.createdAt,
+            updatedAt = comment.audit.updatedAt,
         )
     }
 

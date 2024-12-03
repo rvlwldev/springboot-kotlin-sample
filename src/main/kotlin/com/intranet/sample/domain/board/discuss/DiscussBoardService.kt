@@ -16,6 +16,11 @@ class DiscussBoardService(
     override fun toInfo(board: DiscussBoard) = DiscussBoardDTO.Info(board)
     override fun toPage(page: Page<DiscussBoard>) = DiscussBoardDTO.PageInfo(page)
 
+    fun getAllComment(boardId: Long): List<DiscussBoardDTO.CommentInfo> {
+        val comments = repo.findById(boardId)?.comments ?: throw IllegalArgumentException()
+        return comments.map { DiscussBoardDTO.CommentInfo(it) }
+    }
+
     @Transactional
     fun saveComment(boardId: Long, username: String, password: String, content: String): DiscussBoardDTO.CommentInfo {
         val board = repo.findById(boardId) ?: throw IllegalArgumentException()

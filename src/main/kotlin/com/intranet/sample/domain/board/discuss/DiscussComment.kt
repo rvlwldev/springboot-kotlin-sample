@@ -41,6 +41,8 @@ class DiscussComment(
     val audit: Audit = Audit()
 ) {
 
+    fun getContent() = this.content
+
     constructor(board: DiscussBoard, username: String, password: String, content: String) : this(
         board = board.also { if (it.id == 0L) throw IllegalArgumentException() },
         anonymous = Anonymous(
