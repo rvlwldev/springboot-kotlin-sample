@@ -14,10 +14,11 @@ import jakarta.persistence.ManyToOne
 import jakarta.persistence.PreUpdate
 import jakarta.persistence.Table
 import org.hibernate.annotations.Comment
+import org.springframework.security.crypto.password.PasswordEncoder
 import java.time.LocalDateTime
 
 @Entity
-@Table(name = "discuss_comments")
+@Table(name = "board_discuss_comments")
 class DiscussComment(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,6 +40,19 @@ class DiscussComment(
     @Embedded
     val audit: Audit = Audit()
 ) {
+
+    constructor(board: DiscussBoard, username: String, password: String, content: String) : this(
+        board = board.also { if (it.id == 0L) throw IllegalArgumentException() },
+        anonymous = Anonymous(
+            username.ifBlank { throw IllegalArgumentException() },
+            password.ifBlank { throw IllegalArgumentException() }),
+        content = content.ifBlank { throw IllegalArgumentException() }
+    )
+
+    // 여기서 더 OOP?
+    fun validatePassword(encoder: PasswordEncoder, rawPassword: String) =
+        if (!encoder.matches(rawPassword, this.anonymous.password)) throw IllegalArgumentException()
+        else true
 
     fun write(content: String) {
         if (content.isBlank()) throw IllegalArgumentException()

@@ -26,4 +26,16 @@ class DiscussBoardDTO {
     class PageInfo(page: Page<DiscussBoard>) :
         BoardDTO.OpenPageInfo<DiscussBoard, Info>(page = page, mapper = { Info(it) })
 
+    class CommentInfo(
+        val id: Long,
+        val username: String,
+        val createdAt: LocalDateTime
+    ) {
+        constructor(comment: DiscussComment) : this(
+            id = comment.id,
+            username = comment.anonymous.username,
+            createdAt = comment.audit.createdAt
+        )
+    }
+
 }
