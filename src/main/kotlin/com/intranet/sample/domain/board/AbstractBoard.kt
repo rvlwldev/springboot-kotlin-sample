@@ -1,5 +1,6 @@
 package com.intranet.sample.domain.board
 
+import com.intranet.sample.configuration.exception.BizException
 import com.intranet.sample.domain.core.embed.Anonymous
 import com.intranet.sample.domain.core.embed.Audit
 import jakarta.persistence.Column
@@ -42,14 +43,14 @@ abstract class AbstractBoard(
     fun getContent() = this.content
 
     fun setUser(username: String, password: String) {
-        if (username.isBlank()) throw IllegalArgumentException()
-        if (password.isBlank()) throw IllegalArgumentException()
+        if (username.isBlank()) throw BizException(BoardError.NOT_EMPTY_USERNAME)
+        if (password.isBlank()) throw BizException(BoardError.NOT_EMPTY_PASSWORD)
         this.anonymous = Anonymous(username, password)
     }
 
     fun write(title: String, content: String) {
-        if (title.isBlank()) throw IllegalArgumentException()
-        if (content.isBlank()) throw IllegalArgumentException()
+        if (title.isBlank()) throw BizException(BoardError.NOT_EMPTY_TITLE)
+        if (content.isBlank()) throw BizException(BoardError.NOT_EMPTY_CONTENT)
 
         this.title = title
         this.content = content

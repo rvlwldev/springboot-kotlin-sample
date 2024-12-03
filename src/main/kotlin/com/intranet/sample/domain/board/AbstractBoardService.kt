@@ -1,5 +1,6 @@
 package com.intranet.sample.domain.board
 
+import com.intranet.sample.configuration.exception.BizException
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -17,9 +18,9 @@ abstract class AbstractBoardService<T : AbstractBoard, I : BoardDTO.OpenInfo<T>,
     protected abstract fun toPage(page: Page<T>): P
 
     fun getDetail(id: Long): I {
-        val board = repo.findById(id) ?: throw IllegalArgumentException()
+        val board = repo.findById(id) ?: throw BizException(BoardError.NOT_FOUND)
 
-        if (board.audit.deletedAt != null) throw IllegalArgumentException()
+        if (board.audit.deletedAt != null) throw BizException(BoardError.ALREADY_DELETED)
 
         return toInfo(board)
     }
@@ -42,10 +43,10 @@ abstract class AbstractBoardService<T : AbstractBoard, I : BoardDTO.OpenInfo<T>,
 
     @Transactional
     fun update(id: Long, password: String, title: String, content: String): I {
-        val board = repo.findById(id) ?: throw IllegalArgumentException()
+        val board = repo.findById(id) ?: throw BizException(BoardError.NOT_FOUND)
 
         if (!passwordEncoder.matches(password, board.getPassword()))
-            throw IllegalArgumentException()
+            throw BizException(BoardError.WRONG_PASSWORD)
 
         board.write(title, content)
 
@@ -54,10 +55,10 @@ abstract class AbstractBoardService<T : AbstractBoard, I : BoardDTO.OpenInfo<T>,
 
     @Transactional
     fun delete(id: Long, password: String) {
-        val board = repo.findById(id) ?: throw IllegalArgumentException()
+        val board = repo.findById(id) ?: throw BizException(BoardError.NOT_FOUND)
 
         if (!passwordEncoder.matches(password, board.getPassword()))
-            throw IllegalArgumentException()
+            throw BizException(BoardError.WRONG_PASSWORD)
 
         repo.delete(board)
     }
