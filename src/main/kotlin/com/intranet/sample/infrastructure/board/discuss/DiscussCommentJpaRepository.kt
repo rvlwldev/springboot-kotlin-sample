@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository
 interface DiscussCommentJpaRepository : JpaRepository<DiscussComment, Long> {
 
     fun findAllByBoardId(boardId: Long): List<DiscussComment>
-    fun findByIdAndBoardId(boardId: Long, commentId: Long): DiscussComment?
+    fun findByBoardIdAndId(boardId: Long, commentId: Long): DiscussComment?
 
 }

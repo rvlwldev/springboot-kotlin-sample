@@ -19,8 +19,8 @@ class DiscussBoardRepositoryImpl(
     override fun findAllComments(board: DiscussBoard): List<DiscussComment> =
         commentJpa.findAllByBoardId(board.id)
 
-    override fun findComment(commentId: Long): DiscussComment? =
-        commentJpa.findById(commentId).orElse(null)
+    override fun findComment(boardId: Long, commentId: Long): DiscussComment? =
+        commentJpa.findByBoardIdAndId(boardId, commentId)
 
     override fun saveComment(comment: DiscussComment): DiscussComment =
         commentJpa.save(comment)

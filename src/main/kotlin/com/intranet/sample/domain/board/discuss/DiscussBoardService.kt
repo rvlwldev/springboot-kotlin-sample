@@ -17,9 +17,15 @@ class DiscussBoardService(
     override fun toPage(page: Page<DiscussBoard>) = DiscussBoardDTO.PageInfo(page)
 
     fun getAllComment(boardId: Long): List<DiscussBoardDTO.CommentInfo> {
-        val comments = repo.findById(boardId)?.comments ?: throw IllegalArgumentException()
+        val comments = repo.findById(boardId)?.comments
+            ?: throw IllegalArgumentException()
+
         return comments.map { DiscussBoardDTO.CommentInfo(it) }
     }
+
+    fun getComment(boardId: Long, id: Long) =
+        repo.findComment(boardId, id)?.let { DiscussBoardDTO.CommentInfo(it) }
+            ?: throw IllegalArgumentException()
 
     @Transactional
     fun saveComment(boardId: Long, username: String, password: String, content: String): DiscussBoardDTO.CommentInfo {
@@ -38,8 +44,8 @@ class DiscussBoardService(
     }
 
     @Transactional
-    fun updateComment(id: Long, username: String, password: String, content: String) {
-        val comment = repo.findComment(id) ?: throw IllegalArgumentException()
+    fun updateComment(boardId: Long, id: Long, password: String, content: String): DiscussBoardDTO.CommentInfo {
+        val comment = repo.findComment(boardId, id) ?: throw IllegalArgumentException()
 
         comment.validatePassword(passwordEncoder, password)
         comment.write(content)
@@ -48,8 +54,12 @@ class DiscussBoardService(
             .let { DiscussBoardDTO.CommentInfo(it) }
     }
 
-    fun deleteComment() {
+    fun deleteComment(boardId: Long, id: Long, password: String) {
+        val comment = repo.findComment(boardId, id) ?: throw IllegalArgumentException()
 
+        comment.validatePassword(passwordEncoder, password)
+
+        return repo.deleteComment(comment)
     }
 
 }

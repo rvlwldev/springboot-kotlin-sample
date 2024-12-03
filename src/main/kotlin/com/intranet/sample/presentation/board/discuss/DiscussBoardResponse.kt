@@ -51,4 +51,20 @@ class DiscussBoardResponse {
         )
     }
 
+    data class Comment(
+        val id: Long,
+        val username: String,
+        val content: String,
+        val createdAt: LocalDateTime,
+        val updatedAt: LocalDateTime?
+    ) {
+        constructor(info: DiscussBoardDTO.CommentInfo) : this(
+            id = info.id,
+            username = info.username,
+            content = info.content,
+            createdAt = info.createdAt,
+            updatedAt = info.updatedAt,
+        )
+    }
+
 }
