@@ -3,7 +3,7 @@ server:
 
 logging:
   level:
-    org.hibernate.SQL: debug
+    org:hibernate.SQL: debug
     org.hibernate.tool.hbm2ddl: trace
 
 spring:
@@ -14,16 +14,24 @@ spring:
       charset: UTF-8
       enabled: true
       force: true
-  thymeleaf:
-    suffix: .html
-  datasource:
-    url: jdbc:mysql://localhost:3301/test1?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8&allowPublicKeyRetrieval=true
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    username: root
-    password: test1234
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     show-sql: true
     open-in-view: false
     defer-datasource-initialization: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+  datasource:
+    tobe:
+      jdbc-url: jdbc:mysql://localhost:3301/test1?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8&allowPublicKeyRetrieval=true
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      username: root
+      password: test1234
+    asis:
+      jdbc-url: jdbc:mysql://localhost:3302/test2?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8&allowPublicKeyRetrieval=true
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      username: root
+      password: test1234
+
